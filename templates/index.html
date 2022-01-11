@@ -35,6 +35,7 @@
 </nav>
     <br>
     <div id="chart"></div>
+    <div id="radar"></div>
   <br>
    <br>
 <div style="display: none;">
@@ -84,6 +85,45 @@
         };
 
         var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+
+        var radarOptions = {
+          series: [{
+          name: 'current sample',
+          data: {{current}},
+        }, {
+          name: 'fully baked',
+          data: [58.416315,-61.486674, 13.899627, -15.082598, 32.533329, 31.913712, 69.778246],
+        }],
+          chart: {
+          height: 450,
+          type: 'radar',
+          dropShadow: {
+            enabled: true,
+            blur: 1,
+            left: 1,
+            top: 1
+          }
+        },
+        title: {
+          text: 'signature'
+        },
+        stroke: {
+          width: 2
+        },
+        fill: {
+          opacity: 0.1
+        },
+        markers: {
+          size: 0
+        },
+        xaxis: {
+          categories: ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7']
+        },
+        colors: ['#007bff', '#28a745']
+        };
+
+        var chart = new ApexCharts(document.querySelector("#radar"), radarOptions);
         chart.render();
 </script>
 </body>

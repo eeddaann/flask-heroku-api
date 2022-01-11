@@ -22,7 +22,7 @@ def predict():
     proba = dict(zip([
         0,30,60,90,120,150,180,210
     ],list(model.predict_proba(final_features))[0]))
-    if prediction[0] == 60:
+    if prediction[0] != 210:
         prediction_text = "❌ test failed ~ %s minutes"%(prediction[0])
         color = "bg-danger"
     else:
@@ -33,6 +33,7 @@ def predict():
                     proba=proba,
                     p_keys = list(proba.keys()),
                     p_vals = list(proba.values()),
+                    current = int_features,
                     color=color
                     )
 
