@@ -19,23 +19,25 @@
 <!-- barchart -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 </head>
 
 <body>
-<nav class="navbar navbar-expand-sm bg-primary navbar-light">
-  <ul class="navbar-nav">
+<nav class="navbar navbar-expand-sm {{color}} navbar-light">
+  <ul class="navbar-nav mx-auto">
     <li class="nav-item active">
-      <a class="nav-link" href="index.html">Predictor</a>
+      <br><br>
+      <h1 style="text-align: center;">{{ prediction_text }}</h1>
+      <br><br>
     </li>
-
   </ul>
 </nav>
-
-    <h1 style="text-align: center;">{{ prediction_text }}</h1>
-    <div id="chart_div"></div>
+    <br>
+    <div id="chart"></div>
   <br>
    <br>
-
+<div style="display: none;">
    <form action="{{ url_for('predict')}}"method="post">
        <input type="text" name='v1' placeholder="v1" required="required" />
         <input type="text" name="v2" placeholder="v2" required="required" />
@@ -54,34 +56,35 @@
 
 </div>
 <script>
-    google.charts.load('current', {packages: ['corechart', 'bar']});
-google.charts.setOnLoadCallback(drawBasic);
-
-function drawBasic() {
-
-      var data = google.visualization.arrayToDataTable([
-        ['time', 'probability',],
-        {% for key,value in proba.items() %}
-        ['{{key}}', {{value}}],
-        {% endfor %}
-      ]);
-
       var options = {
-        title: 'probabilities',
-        chartArea: {width: '70%'},
-        hAxis: {
-          title: 'probability',
-          minValue: 0
+          series: [{
+          data: {{p_vals}}
+        }],
+          chart: {
+          type: 'bar',
+          height: 450
         },
-        vAxis: {
-          title: 'time'
+        plotOptions: {
+          bar: {
+            borderRadius: 4,
+            horizontal: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          max: 1,
+          categories: [
+           {% for key in p_keys%}
+          "{{key}}",
+          {% endfor %}
+        ],
         }
-      };
+        };
 
-      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-
-      chart.draw(data, options);
-    }
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
 </script>
 </body>
 </html>

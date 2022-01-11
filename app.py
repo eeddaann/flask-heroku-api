@@ -22,10 +22,19 @@ def predict():
     proba = dict(zip([
         0,30,60,90,120,150,180,210
     ],list(model.predict_proba(final_features))[0]))
+    if prediction[0] == 60:
+        prediction_text = "❌ test failed ~ %s minutes"%(prediction[0])
+        color = "bg-danger"
+    else:
+        prediction_text = "✔️ test passed ~ %s minutes"%(prediction[0])
+        color = "bg-success"
     return render_template('index.html',
-                            prediction_text="prediction: %s"%(prediction[0]),
-                            proba=proba,
-                            )
+                    prediction_text=prediction_text,
+                    proba=proba,
+                    p_keys = list(proba.keys()),
+                    p_vals = list(proba.values()),
+                    color=color
+                    )
 
 if __name__ == "__main__":
     app.run(debug=True)
